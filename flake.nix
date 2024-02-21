@@ -30,7 +30,7 @@
     # In the future we should unify Linux and Darwin configs.
     darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
       system = "aarch64-darwin";
-      user = "matthisk";
+      user = "matthiskheimensen";
       darwin = true;
     };
   };

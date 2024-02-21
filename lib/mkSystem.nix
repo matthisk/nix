@@ -23,7 +23,7 @@ in systemFunc rec {
     userOSConfig
     home-manager.home-manager {
         home-manager.useGlobalPkgs = true;
-        home-manager.useUserPkgs = true;
+        home-manager.useUserPackages = true;
         home-manager.users.${user} = import userHMConfig {
             inputs = inputs;
         };
