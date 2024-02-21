@@ -21,9 +21,17 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }: {
+  outputs = { self, nixpkgs, ... }@inputs: let
+    mkSystem = import ./lib/mkSystem.nix {
+      inherit nixpkgs inputs;
+    };
+  in {
     # For now load a completely separate config for Darwin.
     # In the future we should unify Linux and Darwin configs.
-    darwinConfigurations.macbook-pro-m1 = import ./darwinConfiguration.nix;
+    darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
+      system = "aarch64-darwin";
+      user = "matthisk";
+      darwin = true;
+    };
   };
 }
