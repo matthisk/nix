@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "bobthefish": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1702942933,
+        "narHash": "sha256-jiXzkW4H9YORR4iRNAfjlPT2jSyXQKmNx3WA+TjleE8=",
+        "owner": "oh-my-fish",
+        "repo": "theme-bobthefish",
+        "rev": "05c0765c4ec4c8fee7e2d485587e033b9e4e4543",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oh-my-fish",
+        "repo": "theme-bobthefish",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -17,6 +33,22 @@
       "original": {
         "owner": "LnL7",
         "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "fish-fzf": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708296200,
+        "narHash": "sha256-x/q7tlMlyxZ1ow2saqjuYn05Z1lPOVc13DZ9exFDWoU=",
+        "owner": "PatrickF1",
+        "repo": "fzf.fish",
+        "rev": "dfdf69369bd3a3c83654261f90363da2aa1db8c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PatrickF1",
+        "repo": "fzf.fish",
         "type": "github"
       }
     },
@@ -73,12 +105,31 @@
         "type": "github"
       }
     },
+    "nvim-telescope": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708134271,
+        "narHash": "sha256-302rO8XEy2CUap0l3Zfq4hxuRwIp8jvCkenl2U/K37o=",
+        "owner": "nvim-telescope",
+        "repo": "telescope.nvim",
+        "rev": "b744cf59752aaa01561afb4223006de26f3836fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-telescope",
+        "repo": "telescope.nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "bobthefish": "bobthefish",
         "darwin": "darwin",
+        "fish-fzf": "fish-fzf",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "nvim-telescope": "nvim-telescope"
       }
     }
   },

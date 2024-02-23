@@ -1,5 +1,5 @@
 # The name of the nixos configuration in the flake
-NIXNAME ?= vm-intel
+NIXNAME ?= macbook-pro-m1
 
 # Capture the OS name to determine Makefile behavior
 UNAME := $(shell uname)

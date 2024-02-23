@@ -19,6 +19,27 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    bobthefish = {
+      type = "github";
+      owner = "oh-my-fish";
+      repo = "theme-bobthefish";
+      flake = false;
+    };
+
+    fish-fzf = {
+      type = "github";
+      owner = "PatrickF1";
+      repo = "fzf.fish";
+      flake = false;
+    };
+
+    nvim-telescope = {
+      type = "github";
+      owner = "nvim-telescope";
+      repo = "telescope.nvim";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs: let
