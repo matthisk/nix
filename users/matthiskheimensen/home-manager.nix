@@ -18,6 +18,7 @@ in  {
       pkgs.tree
       pkgs.ripgrep
       pkgs.watch
+      pkgs.tig
 
       # Globally available language servers
       pkgs.nixd
@@ -37,6 +38,7 @@ in  {
           gdiff = "git diff";
           gl = "git prettylog";
           gp = "git push";
+          gps = "git push";
           gs = "git status";
           gt = "git tag";
         };
