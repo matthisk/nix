@@ -1,6 +1,6 @@
 { inputs }:
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, unstable, ... }:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -18,7 +18,10 @@ in  {
       pkgs.tree
       pkgs.ripgrep
       pkgs.watch
-      pkgs.nodejs
+
+      # Globally available language servers
+      pkgs.nixd
+      pkgs.nodePackages.typescript-language-server
     ];
     
     programs.fish = {
@@ -26,6 +29,7 @@ in  {
 
         # Setup git aliases
         shellAliases = {
+          g = "git";
           ga = "git add";
           gc = "git commit";
           gco = "git checkout";
@@ -66,12 +70,17 @@ in  {
       enable = true;
       extraLuaConfig = (import ./vim-config.nix) { inherit inputs; };
       plugins = with pkgs; [
-      	vimPlugins.vim-airline
-	vimPlugins.vim-gitgutter
-	vimPlugins.vim-nix
-        vimPlugins.nvim-treesitter
+        vimPlugins.tokyonight-nvim
+        vimPlugins.lualine-nvim
+	vimPlugins.gitsigns-nvim
+        vimPlugins.flash-nvim
+        vimPlugins.nvim-treesitter.withAllGrammars
+        vimPlugins.vim-nix
+        vimPlugins.dressing-nvim
         vimPlugins.plenary-nvim
-        vimPlugins.which-key-nvim
+        vimPlugins.nvim-cmp
+        vimPlugins.nvim-jdtls
+        vimPlugins.nvim-lspconfig
         (pkgs.vimUtils.buildVimPlugin {
           name = "nvim-telescope";
           src = inputs.nvim-telescope;
@@ -81,8 +90,7 @@ in  {
 
     programs.alacritty = {
       enable = true;
-
-      settings = {
+      settings = (builtins.fromTOML (builtins.readFile "${unstable.alacritty-theme}/tokyo-night.toml")) // {
         shell.program = "${pkgs.fish}/bin/fish";
         window = {
           decorations = "transparent";

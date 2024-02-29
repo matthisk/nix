@@ -15,6 +15,8 @@ let
   # Use the nix-darwin function to create system configuration.
   systemFunc = if darwin then inputs.darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
   home-manager = if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
+
+  unstable = import inputs.nixpkgs-unstable { inherit system; };
 in systemFunc rec {
   inherit system;
 
@@ -24,6 +26,9 @@ in systemFunc rec {
     home-manager.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit unstable;
+        };
         home-manager.users.${user} = import userHMConfig {
             inputs = inputs;
         };
