@@ -19,11 +19,17 @@ in  {
       pkgs.ripgrep
       pkgs.watch
       pkgs.tig
+      pkgs.scmpuff
 
       # Globally available language servers
       pkgs.nixd
+      pkgs.zls
       pkgs.nodePackages.typescript-language-server
+      pkgs.lua-language-server
     ];
+
+    programs.direnv.enable = true;
+    programs.autojump.enable = true;
     
     programs.fish = {
         enable = true;
@@ -39,8 +45,25 @@ in  {
           gl = "git prettylog";
           gp = "git push";
           gps = "git push";
-          gs = "git status";
           gt = "git tag";
+        };
+
+        interactiveShellInit = ''
+          scmpuff init --shell=fish | source
+        '';
+
+        functions = {
+          gitignore = "curl -sL https://www.gitignore.io/api/$argv";
+
+          dvd = ''
+            echo "use flake \"github:the-nix-way/dev-templates?dir=$argv\"" >> .envrc
+            direnv allow
+          '';
+
+          dvt = ''
+            nix flake init -t "github:the-nix-way/dev-templates#$argv"
+            direnv allow
+          '';
         };
 
         plugins = [
@@ -70,7 +93,7 @@ in  {
 
     programs.neovim = {
       enable = true;
-      extraLuaConfig = (import ./vim-config.nix) { inherit inputs; };
+      extraLuaConfig = (builtins.readFile ./vim-init.lua);
       plugins = with pkgs; [
         vimPlugins.tokyonight-nvim
         vimPlugins.lualine-nvim

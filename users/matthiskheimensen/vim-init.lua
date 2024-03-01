@@ -1,5 +1,3 @@
-{ inputs }:
-''
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.wo.colorcolumn = 120
@@ -31,17 +29,36 @@ vim.keymap.set('n', '<leader>sg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>gs', builtin.git_status, {})
 
--- Java language server config
-local config = {
-    cmd = {'/tmp/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/bin/jdtls'},
-    root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
-}
-require('jdtls').start_or_attach(config)
-
 -- Nvim-lspconfig managed language servers
 local lspconfig = require('lspconfig')
 lspconfig.tsserver.setup {}
 lspconfig.nixd.setup {}
+lspconfig.zls.setup {}
+lspconfig.lua_ls.setup {
+  on_init = function(client)
+    local path = client.workspace_folders[1].name
+    if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
+      client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+        Lua = {
+          runtime = {
+            version = 'LuaJIT'
+          },
+	  diagnostics = {
+            -- Get the language server to recognize the `vim` global
+	    globals = { "vim" },
+	  },
+          workspace = {
+            checkThirdParty = false,
+            library = {
+              vim.env.VIMRUNTIME
+            }
+          }
+        }
+      })
+    end
+    return true
+  end
+}
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -80,4 +97,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
   end,
 })
-''
