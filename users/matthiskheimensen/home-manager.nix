@@ -23,6 +23,7 @@ in {
     pkgs.tig
     pkgs.scmpuff
     pkgs.nixfmt
+    pkgs.delta
 
     # Install fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -36,6 +37,14 @@ in {
 
   programs.direnv.enable = true;
   programs.autojump.enable = true;
+
+  home.sessionVariables = {
+    LANG = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    EDITOR = "nvim";
+    PAGER = "less -FirSwX";
+  };
 
   programs.fish = {
     enable = true;
@@ -89,6 +98,10 @@ in {
     userName = "Matthisk Heimensen";
     userEmail = "matthisk@miro.com";
     extraConfig = {
+      core.pager = "delta";
+      interactive.diffFilter = "delta --color-only";
+      merge.conflictstyle = "diff3";
+      diff.colorMoved = "default";
       color.ui = true;
       init.defaultBranch = "main";
       push.default = "tracking";
@@ -115,6 +128,7 @@ in {
       vimPlugins.nvim-lspconfig
       vimPlugins.dirbuf-nvim
       vimPlugins.lsp-format-nvim
+      vimPlugins.nvim-surround
       (pkgs.vimUtils.buildVimPlugin {
         name = "nvim-telescope";
         src = inputs.nvim-telescope;

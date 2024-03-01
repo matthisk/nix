@@ -2,6 +2,9 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 vim.wo.colorcolumn = 120
 
+-- Set the default shell to fish
+vim.opt.shell = "fish"
+
 -- Set the leader key to space
 vim.g.mapleader = " "
 vim.g.localleader = "\\"
@@ -23,6 +26,7 @@ vim.cmd [[colorscheme tokyonight]]
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('flash').setup()
 require('gitsigns').setup()
+require('nvim-surround').setup()
 require('lualine').setup {
   options = {
     theme = "tokyonight"
