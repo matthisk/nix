@@ -6,10 +6,21 @@ vim.wo.colorcolumn = 120
 vim.g.mapleader = " "
 vim.g.localleader = "\\"
 
+-- Set indentation configuration
+vim.cmd [[
+set autoindent
+set expandtab
+set shiftwidth=2
+set smartindent
+set softtabstop=2
+set tabstop=2
+]]
+
 -- Set the theme
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd [[colorscheme tokyonight]]
 
 -- Load several plugins
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('flash').setup()
 require('gitsigns').setup()
 require('lualine').setup {
@@ -29,24 +40,35 @@ vim.keymap.set('n', '<leader>sg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>gc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>gs', builtin.git_status, {})
 
+-- Setup LSP backed formatting
+require("lsp-format").setup {}
+
 -- Nvim-lspconfig managed language servers
 local lspconfig = require('lspconfig')
-lspconfig.tsserver.setup {}
-lspconfig.nixd.setup {}
-lspconfig.zls.setup {}
+local lsp_servers = { 'tsserver', 'nixd', 'zls' }
+
+for _, lsp in ipairs(lsp_servers) do
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
+    on_attach = require("lsp-format").on_attach,
+  }
+end
+
 lspconfig.lua_ls.setup {
+  capablities = capabilities,
+  on_attach = require("lsp-format").on_attach,
   on_init = function(client)
     local path = client.workspace_folders[1].name
-    if not vim.loop.fs_stat(path..'/.luarc.json') and not vim.loop.fs_stat(path..'/.luarc.jsonc') then
+    if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
       client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
         Lua = {
           runtime = {
             version = 'LuaJIT'
           },
-	  diagnostics = {
+          diagnostics = {
             -- Get the language server to recognize the `vim` global
-	    globals = { "vim" },
-	  },
+            globals = { "vim" },
+          },
           workspace = {
             checkThirdParty = false,
             library = {
@@ -97,3 +119,35 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
   end,
 })
+
+-- nvim-cmp setup
+local cmp = require('cmp')
+cmp.setup {
+  mapping = cmp.mapping.preset.insert({
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),  -- Down
+    -- C-b (back) C-f (forward) for snippet placeholder navigation.
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+  },
+}
