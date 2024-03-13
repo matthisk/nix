@@ -63,6 +63,7 @@ in {
       gl = "git prettylog";
       gp = "git push";
       gps = "git push";
+      gpl = "git pull";
       gt = "git tag";
     };
 
@@ -77,6 +78,16 @@ in {
     '';
 
     functions = {
+      # Utilities to quickly clone git repos
+      miro_hubgit = ''
+        git clone git@github.com:miroapp-dev/$argv $HOME/dev/github.com/miroapp-dev/$argv
+        cd $HOME/dev/github.com/miroapp-dev/$argv
+      '';
+      tthisk_hubgit = ''
+        git clone git@github.com:matthisk/$argv $HOME/dev/github.com/matthisk/$argv
+        cd $HOME/dev/github.com/tthisk/$argv
+      '';
+
       gitignore = "curl -sL https://www.gitignore.io/api/$argv";
 
       dvd = ''
