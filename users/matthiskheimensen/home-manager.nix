@@ -152,7 +152,9 @@ in {
       (builtins.readFile "${unstable.alacritty-theme}/tokyo-night.toml")) // {
         shell.program = "${pkgs.fish}/bin/fish";
         window = {
-          decorations = "transparent";
+          decorations = if isDarwin then "Transparent" else "Full";
+          startup_mode = "Fullscreen";
+          opacity = 0.9;
           padding = { y = 27; };
         };
         dynamic_title = true;
