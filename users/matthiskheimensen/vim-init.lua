@@ -9,6 +9,10 @@ vim.opt.shell = "fish"
 vim.g.mapleader = " "
 vim.g.localleader = "\\"
 
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Set indentation configuration
 vim.cmd [[
 set autoindent
@@ -27,6 +31,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('flash').setup()
 require('gitsigns').setup()
 require('nvim-surround').setup()
+require('nvim-tree').setup()
 require('lualine').setup {
   options = {
     theme = "tokyonight"

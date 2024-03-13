@@ -33,7 +33,10 @@ in {
     pkgs.zls
     pkgs.nodePackages.typescript-language-server
     pkgs.lua-language-server
-  ];
+  ] ++ (lib.optionals isDarwin [
+    # This comes pre-installed on Linux
+    pkgs.cachix
+  ]) ++ (lib.optionals isLinux [ pkgs.chromium pkgs.firefox ]);
 
   programs.direnv.enable = true;
   programs.autojump.enable = true;
@@ -62,6 +65,12 @@ in {
       gps = "git push";
       gt = "git tag";
     };
+
+    shellInit = ''
+      if test -f ~/.secrets
+        source ~/.secrets
+      end
+    '';
 
     interactiveShellInit = ''
       scmpuff init --shell=fish | source
@@ -129,6 +138,7 @@ in {
       vimPlugins.dirbuf-nvim
       vimPlugins.lsp-format-nvim
       vimPlugins.nvim-surround
+      vimPlugins.nvim-tree-lua
       (pkgs.vimUtils.buildVimPlugin {
         name = "nvim-telescope";
         src = inputs.nvim-telescope;

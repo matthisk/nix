@@ -19,7 +19,7 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     bobthefish = {
       type = "github";
       owner = "oh-my-fish";
@@ -42,17 +42,18 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: let
-    mkSystem = import ./lib/mkSystem.nix {
-      inherit nixpkgs inputs;
+  outputs = { self, nixpkgs, ... }@inputs:
+    let mkSystem = import ./lib/mkSystem.nix { inherit nixpkgs inputs; };
+    in {
+      darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
+        system = "aarch64-darwin";
+        user = "matthiskheimensen";
+        darwin = true;
+      };
+
+      nixosConfigurations.vm-aarch64 = mkSystem "vm-aarch64" {
+        system = "aarch64-linux";
+        user = "matthiskheimensen";
+      };
     };
-  in {
-    # For now load a completely separate config for Darwin.
-    # In the future we should unify Linux and Darwin configs.
-    darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
-      system = "aarch64-darwin";
-      user = "matthiskheimensen";
-      darwin = true;
-    };
-  };
 }
