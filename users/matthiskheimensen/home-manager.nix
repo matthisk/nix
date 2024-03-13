@@ -159,7 +159,7 @@ in {
         };
         dynamic_title = true;
         font = {
-          size = 14;
+          size = 12;
           normal = { family = "FiraCode Nerd Font Mono"; };
         };
       };
