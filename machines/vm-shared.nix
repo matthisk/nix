@@ -104,6 +104,11 @@ in {
     packages = [ pkgs.fira-code pkgs.jetbrains-mono ];
   };
 
+  # Required to make the Gnome keyring work. The keyring makes passwords and other secrets
+  # available to applications.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs;
