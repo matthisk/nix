@@ -65,7 +65,11 @@ in {
       gps = "git push";
       gpl = "git pull";
       gt = "git tag";
-    };
+    } // (if isLinux then {
+      pbcopy = "xclip";
+      pbpaste = "xclip -o";
+    } else
+      { });
 
     shellInit = ''
       if test -f ~/.secrets

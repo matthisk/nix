@@ -18,8 +18,7 @@
     home = "/home/matthiskheimensen";
     extraGroups = [ "docker" "wheel" ];
     shell = pkgs.fish;
-    password = "root";
-    # hashedPassword = "$6$OOuRRxl1xnCVP8Fx$fbbcwouqOhIf4Hyh1xQu6.9RGdSNQTuIGywipys0CHLq5PZoXUgk4LNxiqaO43rrr2jj5HKLeEP16oi3FRuPT.";
+    hashedPassword = "$y$j9T$Tk8XgXz7jBJawmkGoI.P91$6h5SkiEp.cQIaFoyqXQ7BrO7aZcwt46H/dy7h4ugeC0";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYr7yTqfml9anrJkxlaNL75dZlbjExz3RiocMgrzzlW matthiskheimensen@gmail.com"
     ];
