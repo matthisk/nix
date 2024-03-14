@@ -71,6 +71,10 @@ vm/bootstrap:
 	NIXUSER=root $(MAKE) vm/copy
 	NIXUSER=root $(MAKE) vm/switch
 	$(MAKE) vm/secrets
+	$(MAKE) vm/reboot
+
+# reboot the VM
+vm/reboot:
 	ssh $(SSH_OPTIONS) -p$(NIXPORT) $(NIXUSER)@$(NIXADDR) " \
 		sudo reboot; \
 	"
