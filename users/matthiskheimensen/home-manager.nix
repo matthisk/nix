@@ -38,6 +38,7 @@ in {
     pkgs.cachix
   ]) ++ (lib.optionals isLinux [ pkgs.chromium pkgs.firefox ]);
 
+  programs.gpg.enable = !isDarwin;
   programs.direnv.enable = true;
   programs.autojump.enable = true;
 
