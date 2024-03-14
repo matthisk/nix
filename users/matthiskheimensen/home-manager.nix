@@ -79,6 +79,11 @@ in {
 
     interactiveShellInit = ''
       scmpuff init --shell=fish | source
+
+      # This is required for commit signing from cmdline
+      if isatty
+          set -x GPG_TTY (tty)
+      end
     '';
 
     functions = {
@@ -120,7 +125,11 @@ in {
   programs.git = {
     enable = true;
     userName = "Matthisk Heimensen";
-    userEmail = "matthisk@miro.com";
+    userEmail = "m@tthisk.nl";
+    signing = {
+      key = "AB088E23691F352C";
+      signByDefault = true;
+    };
     extraConfig = {
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
