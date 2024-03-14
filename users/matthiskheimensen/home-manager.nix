@@ -24,6 +24,7 @@ in {
     pkgs.scmpuff
     pkgs.nixfmt
     pkgs.delta
+    pkgs.gh
 
     # Install fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
