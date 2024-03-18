@@ -25,6 +25,7 @@ in {
     pkgs.nixfmt
     pkgs.delta
     pkgs.gh
+    pkgs.inotify-tools
 
     # Install fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -90,6 +91,10 @@ in {
 
     functions = {
       # Utilities to quickly clone git repos
+      hubgit = ''
+        git clone git@github.com:$argv[1]/$argv[2] $HOME/dev/github.com/$argv[1]/$argv[2]
+        cd $HOME/dev/github.com/$argv[1]/$argv[2]
+      '';
       miro_hubgit = ''
         git clone git@github.com:miroapp-dev/$argv $HOME/dev/github.com/miroapp-dev/$argv
         cd $HOME/dev/github.com/miroapp-dev/$argv
