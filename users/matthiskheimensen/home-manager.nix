@@ -170,6 +170,7 @@ in {
       vimPlugins.lsp-format-nvim
       vimPlugins.nvim-surround
       vimPlugins.nvim-tree-lua
+      vimPlugins.luasnip
       (pkgs.vimUtils.buildVimPlugin {
         name = "nvim-telescope";
         src = inputs.nvim-telescope;
