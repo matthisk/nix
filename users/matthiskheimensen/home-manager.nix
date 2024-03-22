@@ -25,7 +25,6 @@ in {
     pkgs.nixfmt
     pkgs.delta
     pkgs.gh
-    pkgs.inotify-tools
 
     # Install fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -38,7 +37,11 @@ in {
   ] ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux
     pkgs.cachix
-  ]) ++ (lib.optionals isLinux [ pkgs.chromium pkgs.firefox ]);
+  ]) ++ (lib.optionals isLinux [
+    pkgs.chromium
+    pkgs.firefox
+    pkgs.inotify-tools
+  ]);
 
   programs.gpg.enable = !isDarwin;
   programs.direnv.enable = true;
@@ -185,13 +188,15 @@ in {
         shell.program = "${pkgs.fish}/bin/fish";
         window = {
           decorations = if isDarwin then "Transparent" else "Full";
-          startup_mode = "Fullscreen";
+          startup_mode = if isDarwin then "Maximized" else "Fullscreen";
           opacity = 0.9;
           padding = { y = 27; };
         };
         dynamic_title = true;
         font = {
-          size = 12;
+          # Haven't figured a way to get the linux font and mac font to behave the same on high DPI screens.
+          # For now just setting a different font size on each OS.
+          size = if isDarwin then 14 else 12;
           normal = { family = "FiraCode Nerd Font Mono"; };
         };
       };
