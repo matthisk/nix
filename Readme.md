@@ -20,6 +20,12 @@ Create a VMware Fusion VM with the following settings. My configurations are mad
 * Profile: Disable almost all keybindings
 * Boot Mode: UEFI
 
+On VMWare Workstation on Windows make sure you are in the UEFI build mode. On my workstation the setup defaulted to BIOS. To update to UEFI add the following line to the VM's vmx file:
+
+```
+firmare = "efi"
+```
+
 Boot the VM, and using the graphical console, change the root password to "root":
 
 ```
