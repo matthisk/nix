@@ -1,9 +1,11 @@
 { nixpkgs, inputs }:
 
 name:
-{ system, user, darwin ? false }:
+{ system, user, darwin ? false, wsl ? false }:
 
 let
+  isWSL = wsl;
+
   machineConfig = ../machines/${name}.nix;
   userOSConfig = ../users/${user}/${if darwin then "darwin" else "nixos"}.nix;
   userHMConfig = ../users/${user}/home-manager.nix;
@@ -21,6 +23,9 @@ in systemFunc rec {
   inherit system;
 
   modules = [
+    # Bring in WSL if this is a WSL build
+    (if isWSL then inputs.nixos-wsl.nixosModules.wsl else {})
+
     machineConfig
     userOSConfig
     home-manager.home-manager
@@ -28,7 +33,7 @@ in systemFunc rec {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = { inherit unstable; };
-      home-manager.users.${user} = import userHMConfig { inputs = inputs; };
+      home-manager.users.${user} = import userHMConfig { isWSL = isWSL; inputs = inputs; };
     }
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.
@@ -37,6 +42,7 @@ in systemFunc rec {
         currentSystem = system;
         currentSystemName = name;
         currentSystemUser = user;
+        isWSL = isWSL;
         inputs = inputs;
       };
     }

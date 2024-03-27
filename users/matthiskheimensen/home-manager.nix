@@ -1,4 +1,4 @@
-{ inputs }:
+{ isWSL, inputs }:
 
 { config, lib, pkgs, unstable, ... }:
 
@@ -37,7 +37,7 @@ in {
   ] ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux
     pkgs.cachix
-  ]) ++ (lib.optionals isLinux [
+  ]) ++ (lib.optionals (isLinux && !isWSL) [
     pkgs.chromium
     pkgs.firefox
     pkgs.inotify-tools
@@ -183,7 +183,7 @@ in {
   };
 
   programs.alacritty = {
-    enable = true;
+    enable = !isWSL;
     settings = (builtins.fromTOML
       (builtins.readFile "${unstable.alacritty-theme}/tokyo-night.toml")) // {
         shell.program = "${pkgs.fish}/bin/fish";

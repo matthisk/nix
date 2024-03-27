@@ -109,3 +109,7 @@ vm/switch:
 		sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake \"/nix-config#${NIXNAME}\" \
 	"
 
+# Build a WSL installer
+.PHONY: wsl
+wsl:
+	nix run --extra-experimental-features nix-command --extra-experimental-features flakes ".#nixosConfigurations.wsl.config.system.build.tarballBuilder"

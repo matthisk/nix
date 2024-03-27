@@ -10,6 +10,10 @@
     # We use the unstable nixpkgs repo for some packages.
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    # Build a custom WSL installer
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +58,17 @@
       nixosConfigurations.vm-aarch64 = mkSystem "vm-aarch64" {
         system = "aarch64-linux";
         user = "matthiskheimensen";
+      };
+
+      nixosConfigurations.vm-intel = mkSystem "vm-intel" {
+        system = "x86_64-linux";
+        user = "matthiskheimensen";
+      };
+
+      nixosConfigurations.wsl = mkSystem "wsl" {
+        system = "x86_64-linux";
+        user = "matthiskheimensen";
+        wsl = true;
       };
     };
 }
