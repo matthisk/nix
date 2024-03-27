@@ -174,6 +174,7 @@ in {
       vimPlugins.nvim-surround
       vimPlugins.nvim-tree-lua
       vimPlugins.luasnip
+      vimPlugins.neoterm
       (pkgs.vimUtils.buildVimPlugin {
         name = "nvim-telescope";
         src = inputs.nvim-telescope;

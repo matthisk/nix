@@ -165,3 +165,29 @@ cmp.setup {
     { name = 'nvim_lsp' },
   },
 }
+
+-- Terminal configuration
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
+vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]])
+vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]])
+vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>k]])
+vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]])
+
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+  pattern = { "*" },
+  callback = function()
+    if vim.opt.buftype:get() == "terminal" then
+      vim.cmd(":startinsert")
+    end
+  end
+})
+
+vim.g.neoterm_default_mod = 'botright horizontal'
+vim.g.neoterm_size = tostring(0.3 * vim.api.nvim_win_get_height(0))
+
+vim.keymap.set('n', '<leader>e', '<cmd>:1T zig build test<cr>')
+
+vim.api.nvim_create_user_command('TaskPersist', function(input)
+  vim.api.nvim_command(":1Tclear")
+  vim.api.nvim_command(":1T " .. "npm test")
+end, { nargs = "*" })
