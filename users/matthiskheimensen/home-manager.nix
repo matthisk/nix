@@ -153,6 +153,14 @@ in {
     };
   };
 
+  programs.ssh = {
+    enable = true;
+    extraConfig = if isDarwin then "UseKeychain yes" else "";
+    # This option is available on master but not in 23.11.
+    # Enable it once a new version ships.
+    # addKeysToAgent = "yes";
+  };
+
   programs.neovim = {
     enable = true;
     extraLuaConfig = (builtins.readFile ./vim-init.lua);
