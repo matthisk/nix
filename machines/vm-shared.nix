@@ -69,6 +69,11 @@ in {
     layout = "us";
     desktopManager.gnome.enable = true;
     displayManager.gdm.enable = true;
+    # Disable lockscreen inside VM, the host OS can handle locking when idle.
+    desktopManager.gnome.extraGSettingsOverrides = ''
+      [org.gnome.desktop.session]
+          idle-delay=0
+    '';
   } else {
     enable = true;
     layout = "us";
