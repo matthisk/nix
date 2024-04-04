@@ -90,6 +90,14 @@ in {
       if isatty
           set -x GPG_TTY (tty)
       end
+
+      # Utilities for path navigation
+      function ...
+          ../..
+      end
+      function ....
+          ../../..
+      end
     '';
 
     functions = {
