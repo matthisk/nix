@@ -5,6 +5,7 @@
         enable = true;
         casks = [
           "raycast"
+          "zed"
         ];
         brews = [
           "miro-buf"
