@@ -186,6 +186,7 @@ vim.g.neoterm_default_mod = 'botright horizontal'
 vim.g.neoterm_size = tostring(0.3 * vim.api.nvim_win_get_height(0))
 
 vim.keymap.set('n', '<leader>e', '<cmd>:1T zig build test<cr>')
+vim.keymap.set('n', '<leader>r', '<cmd>:1T zig build run<cr>')
 
 vim.api.nvim_create_user_command('TaskPersist', function(input)
   vim.api.nvim_command(":1Tclear")
