@@ -6,7 +6,7 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 in {
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
 
   fonts.fontconfig.enable = true;
 
