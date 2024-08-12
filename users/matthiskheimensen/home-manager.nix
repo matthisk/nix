@@ -22,7 +22,7 @@ in {
     pkgs.watch
     pkgs.tig
     pkgs.scmpuff
-    pkgs.nixfmt
+    pkgs.nixfmt-classic
     pkgs.delta
     pkgs.gh
 
@@ -209,7 +209,6 @@ in {
           opacity = 0.9;
           padding = { y = 27; };
         };
-        dynamic_title = true;
         font = {
           # Haven't figured a way to get the linux font and mac font to behave the same on high DPI screens.
           # For now just setting a different font size on each OS.
