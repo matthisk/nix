@@ -1,6 +1,6 @@
 vim.wo.number = true
 vim.wo.relativenumber = true
-vim.wo.colorcolumn = 120
+vim.wo.colorcolumn = "120"
 
 -- Set the default shell to fish
 vim.opt.shell = "fish"
