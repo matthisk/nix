@@ -25,6 +25,7 @@ in {
     pkgs.nixfmt-classic
     pkgs.delta
     pkgs.gh
+    pkgs.fnm
 
     # Install fonts
     (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
@@ -81,6 +82,7 @@ in {
       if test -f ~/.secrets
         source ~/.secrets
       end
+      fnm env --use-on-cd --shell fish | source
     '';
 
     interactiveShellInit = ''
