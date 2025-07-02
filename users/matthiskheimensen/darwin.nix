@@ -6,9 +6,11 @@
         casks = [
           "raycast"
           "zed"
+          "ghostty"
         ];
         brews = [
           "miro-buf"
+          "miro-dev-proxy"
         ];
         taps = [{
           name = "miroapp-dev/homebrew-miro";
