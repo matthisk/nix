@@ -28,7 +28,7 @@ in {
     pkgs.fnm
 
     # Install fonts
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
+    pkgs.nerd-fonts.fira-code
 
     # Globally available language servers
     pkgs.nixd
@@ -193,17 +193,14 @@ in {
       vimPlugins.nvim-tree-lua
       vimPlugins.luasnip
       vimPlugins.neoterm
-      (pkgs.vimUtils.buildVimPlugin {
-        name = "nvim-telescope";
-        src = inputs.nvim-telescope;
-      })
+      vimPlugins.telescope-nvim
     ];
   };
 
   programs.alacritty = {
     enable = !isWSL;
     settings = (builtins.fromTOML
-      (builtins.readFile "${unstable.alacritty-theme}/tokyo-night.toml")) // {
+      (builtins.readFile "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml")) // {
         shell.program = "${pkgs.fish}/bin/fish";
         window = {
           decorations = if isDarwin then "Transparent" else "Full";
