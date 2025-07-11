@@ -54,7 +54,7 @@ require("lsp-format").setup {}
 
 -- Nvim-lspconfig managed language servers
 local lspconfig = require('lspconfig')
-local lsp_servers = { 'tsserver', 'nixd', 'zls' }
+local lsp_servers = { 'ts_ls', 'nixd', 'zls' }
 
 for _, lsp in ipairs(lsp_servers) do
   lspconfig[lsp].setup {

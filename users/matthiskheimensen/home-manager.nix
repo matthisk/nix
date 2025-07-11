@@ -201,7 +201,7 @@ in {
     enable = !isWSL;
     settings = (builtins.fromTOML
       (builtins.readFile "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml")) // {
-        shell.program = "${pkgs.fish}/bin/fish";
+        terminal.shell = "${pkgs.fish}/bin/fish";
         window = {
           decorations = if isDarwin then "Transparent" else "Full";
           startup_mode = if isDarwin then "Maximized" else "Fullscreen";
