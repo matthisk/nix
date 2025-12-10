@@ -194,13 +194,15 @@ in {
       vimPlugins.luasnip
       vimPlugins.neoterm
       vimPlugins.telescope-nvim
+      vimPlugins.claude-code-nvim
     ];
   };
 
   programs.alacritty = {
     enable = !isWSL;
-    settings = (builtins.fromTOML
-      (builtins.readFile "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml")) // {
+    settings = (builtins.fromTOML (builtins.readFile
+      "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml"))
+      // {
         terminal.shell = "${pkgs.fish}/bin/fish";
         window = {
           decorations = if isDarwin then "Transparent" else "Full";

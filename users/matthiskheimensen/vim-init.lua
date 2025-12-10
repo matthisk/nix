@@ -32,6 +32,11 @@ require('flash').setup()
 require('gitsigns').setup()
 require('nvim-surround').setup()
 require('nvim-tree').setup()
+require('claude-code').setup({
+  window = {
+    split_ratio = 1.0,
+  }
+})
 require('lualine').setup {
   options = {
     theme = "tokyonight"
@@ -173,6 +178,7 @@ vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>j]])
 vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>k]])
 vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-w>l]])
 
+-- this code to automatically enter insert mode when opening a terminal
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   pattern = { "*" },
   callback = function()
@@ -182,11 +188,11 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   end
 })
 
-vim.g.neoterm_default_mod = 'botright horizontal'
+
 vim.g.neoterm_size = tostring(0.3 * vim.api.nvim_win_get_height(0))
 
-vim.keymap.set('n', '<leader>e', '<cmd>:1T zig build test<cr>')
-vim.keymap.set('n', '<leader>r', '<cmd>:1T zig build run<cr>')
+vim.keymap.set('n', '<leader>cc', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
+vim.keymap.set('n', '<leader>.', '<cmd>Ttoggle<cr>', { desc = "Toggle terminal" });
 
 vim.api.nvim_create_user_command('TaskPersist', function(input)
   vim.api.nvim_command(":1Tclear")
