@@ -144,13 +144,13 @@ in {
 
   programs.git = {
     enable = true;
-    userName = "Matthisk Heimensen";
-    userEmail = "m@tthisk.nl";
     signing = {
       key = "AB088E23691F352C";
       signByDefault = true;
     };
-    extraConfig = {
+    settings = {
+      user.name = "Matthisk Heimensen";
+      user.email = "m@tthisk.nl";
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
       merge.conflictstyle = "diff3";
@@ -163,7 +163,7 @@ in {
     };
   };
 
-  programs.ssh = {
+  programs.ssh.matchBlocks."*" = {
     enable = true;
     extraConfig = if isDarwin then "UseKeychain yes" else "";
     # This option is available on master but not in 23.11.
