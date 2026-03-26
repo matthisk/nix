@@ -57,19 +57,18 @@ vim.keymap.set('n', '<leader>gs', builtin.git_status, {})
 -- Setup LSP backed formatting
 require("lsp-format").setup {}
 
--- Nvim-lspconfig managed language servers
-local lspconfig = require('lspconfig')
+-- Nvim-lspconfig managed language servers (nvim 0.11+ API)
 local lsp_servers = { 'ts_ls', 'nixd', 'zls' }
 
 for _, lsp in ipairs(lsp_servers) do
-  lspconfig[lsp].setup {
+  vim.lsp.config(lsp, {
     capabilities = capabilities,
     on_attach = require("lsp-format").on_attach,
-  }
+  })
 end
 
-lspconfig.lua_ls.setup {
-  capablities = capabilities,
+vim.lsp.config('lua_ls', {
+  capabilities = capabilities,
   on_attach = require("lsp-format").on_attach,
   on_init = function(client)
     local path = client.workspace_folders[1].name
@@ -94,7 +93,9 @@ lspconfig.lua_ls.setup {
     end
     return true
   end
-}
+})
+
+vim.lsp.enable(vim.list_extend(lsp_servers, { 'lua_ls' }))
 
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
