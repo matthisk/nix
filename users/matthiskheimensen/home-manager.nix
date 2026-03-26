@@ -26,6 +26,7 @@ in {
     pkgs.delta
     pkgs.gh
     pkgs.fnm
+    pkgs.postgresql
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -44,7 +45,7 @@ in {
     pkgs.inotify-tools
   ]);
 
-  programs.gpg.enable = !isDarwin;
+  programs.gpg.enable = true;
   programs.direnv.enable = true;
   programs.autojump.enable = true;
 
