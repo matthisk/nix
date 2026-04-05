@@ -27,6 +27,8 @@ in {
     pkgs.gh
     pkgs.fnm
     pkgs.postgresql
+    pkgs.uv
+    pkgs.graphviz
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -145,13 +147,14 @@ in {
 
   programs.git = {
     enable = true;
+    lfs.enable = true;
     signing = {
       key = "AB088E23691F352C";
       signByDefault = true;
     };
     settings = {
       user.name = "Matthisk Heimensen";
-      user.email = "m@tthisk.nl";
+      user.email = "matthisk@miro.com";
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
       merge.conflictstyle = "diff3";

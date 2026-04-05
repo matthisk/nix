@@ -13,6 +13,7 @@
       "docker-desktop"
       "rectangle"
       "elasticvue"
+      "zulu@17"
     ];
     # The Miro specific dependencies require Artifactory env variables.
     # As of right now I haven't found a way for Nix to propagate these env variables.
