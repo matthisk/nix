@@ -58,7 +58,7 @@ vim.keymap.set('n', '<leader>gs', builtin.git_status, {})
 require("lsp-format").setup {}
 
 -- Nvim-lspconfig managed language servers (nvim 0.11+ API)
-local lsp_servers = { 'ts_ls', 'nixd', 'zls' }
+local lsp_servers = { 'vtsls', 'nixd', 'zls' }
 
 for _, lsp in ipairs(lsp_servers) do
   vim.lsp.config(lsp, {

@@ -29,6 +29,9 @@ in {
     pkgs.postgresql
     pkgs.uv
     pkgs.graphviz
+    pkgs.btop
+    pkgs.pi-coding-agent
+    pkgs.zulu25
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -36,7 +39,7 @@ in {
     # Globally available language servers
     pkgs.nixd
     pkgs.zls
-    pkgs.nodePackages.typescript-language-server
+    pkgs.vtsls
     pkgs.lua-language-server
   ] ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux
@@ -51,12 +54,18 @@ in {
   programs.direnv.enable = true;
   programs.autojump.enable = true;
 
+  home.sessionPath = lib.optionals isDarwin [
+    "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+    "$HOME/.local/bin"
+  ];
+
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
     LC_CTYPE = "en_US.UTF-8";
     LC_ALL = "en_US.UTF-8";
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
+    JAVA_HOME = "${pkgs.zulu25}";
   };
 
   programs.fish = {
@@ -73,6 +82,8 @@ in {
       gl = "git prettylog";
       gp = "git push";
       gps = "git push";
+      gpf = "git push --force-with-lease";
+      gpo = "git push origin HEAD";
       gpl = "git pull";
       gt = "git tag";
     } // (if isLinux then {
@@ -148,6 +159,11 @@ in {
   programs.git = {
     enable = true;
     lfs.enable = true;
+    ignores = [
+      ".idea"
+      ".codex"
+      ".agents"
+    ];
     signing = {
       key = "AB088E23691F352C";
       signByDefault = true;

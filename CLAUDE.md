@@ -12,9 +12,12 @@ Nixpkgs channel: `nixos-25.11` (stable), with `nixpkgs-unstable` for select pack
 
 ### macOS (primary machine)
 ```bash
-make switch    # Apply darwin configuration
-make test      # Test without applying
+make           # Same as `make switch` (switch is the default target)
+make switch    # Build + apply darwin configuration (darwin-rebuild switch)
+make test      # Build + apply as a test generation, not persisted across reboot
 ```
+
+`NIXNAME` defaults to `macbook-pro-m1`; override it to target another config (e.g. `make test NIXNAME=vm-aarch64`).
 
 ### Linux VMs (initial bootstrap from host Mac)
 ```bash
@@ -40,7 +43,9 @@ make wsl    # Build WSL installer tarball
 Defines 4 system outputs: `macbook-pro-m1`, `vm-aarch64`, `vm-intel`, `wsl`. All are built through the `lib/mkSystem.nix` factory.
 
 ### `lib/mkSystem.nix`
-Factory function that assembles the correct module list based on platform (Darwin vs NixOS). Injects shared context (system type, hostname, username, `isWSL` flag) into all modules via `specialArgs`.
+Factory function that assembles the correct module list based on platform (Darwin vs NixOS). It selects the system builder (`darwinSystem` vs `nixosSystem`) and the matching home-manager module, then injects shared context into all system modules via `config._module.args`: `currentSystem`, `currentSystemName`, `currentSystemUser`, `isWSL`, `inputs`.
+
+The home-manager config is imported as a function taking `{ isWSL, inputs }`, and `nixpkgs-unstable` is passed in separately as `unstable` via `home-manager.extraSpecialArgs`. Reference unstable packages in `home-manager.nix` through the `unstable` arg (e.g. `unstable.somePackage`).
 
 ### Layer structure
 1. **`machines/`** — hardware/platform config (bootloader, kernel modules, VM-specific tweaks)
@@ -51,7 +56,8 @@ Factory function that assembles the correct module list based on platform (Darwi
 - `home-manager.nix` is shared across all platforms; platform-specific differences are guarded by `pkgs.stdenv.isDarwin` / `isWSL` checks
 - The M1 Mac uses the Determinate Systems Nix installer, so `nix.enable = false` in `machines/macbook-pro-m1.nix`
 - `modules/vmware-guest.nix` is a custom module adding aarch64 VMware guest support (upstream lacks it)
-- `pkgs/jdtls.nix` is a custom derivation for the Eclipse Java Language Server
+- `pkgs/jdtls.nix` is a custom derivation for the Eclipse Java Language Server, exposed via `pkgs/default.nix`. Note that `pkgs/default.nix` pins its own older nixpkgs (`nixos-23.11`), independent of the flake's channel
+- Nix files are formatted with `nixfmt` (configured in `.nixd.json` for the editor LSP); format new/edited `.nix` files with `nixfmt` to match the existing style
 
 ### Neovim config
 Managed entirely in Nix: plugins declared in `home-manager.nix`, Lua config in `users/matthiskheimensen/vim-init.lua` (loaded via `programs.neovim.extraLuaConfig`).
