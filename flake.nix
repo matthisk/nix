@@ -14,6 +14,10 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
+    # We install herdr from its flake.
+    herdr.url = "github:herdrdev/herdr";
+    xremap-flake.url = "github:xremap/nix-flake";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,9 +43,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
-    let mkSystem = import ./lib/mkSystem.nix { inherit nixpkgs inputs; };
-    in {
+  outputs =
+    { self, nixpkgs, ... }@inputs:
+    let
+      mkSystem = import ./lib/mkSystem.nix { inherit nixpkgs inputs; };
+    in
+    {
       darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
         system = "aarch64-darwin";
         user = "matthiskheimensen";

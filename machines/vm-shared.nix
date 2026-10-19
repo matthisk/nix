@@ -1,17 +1,25 @@
-{ config, pkgs, lib, currentSystem, currentSystemName, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  currentSystem,
+  currentSystemName,
+  ...
+}:
 
 let
   # Turn this to true to use gnome instead of i3. This is a bit
   # of a hack, I just flip it on as I need to develop gnome stuff
   # for now.
   linuxGnome = true;
-in {
+in
+{
   # Be careful updating this.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
     # use unstable nix so we can access flakes
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
@@ -59,44 +67,53 @@ in {
     defaultLocale = "en_US.UTF-8";
     inputMethod = {
       enabled = "fcitx5";
-      fcitx5.addons = with pkgs; [ fcitx5-mozc fcitx5-gtk ];
+      fcitx5.addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-gtk
+      ];
     };
   };
 
   # setup windowing environment
-  services.xserver = if linuxGnome then {
-    enable = true;
-    layout = "us";
-    desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-    # Disable lockscreen inside VM, the host OS can handle locking when idle.
-    desktopManager.gnome.extraGSettingsOverrides = ''
-      [org.gnome.desktop.session]
-          idle-delay=0
-    '';
-  } else {
-    enable = true;
-    layout = "us";
-    dpi = 220;
+  services.xserver =
+    if linuxGnome then
+      {
+        enable = true;
+        layout = "us";
+        desktopManager.gnome.enable = true;
+        displayManager.gdm.enable = true;
+        # Disable lockscreen inside VM, the host OS can handle locking when idle.
+        desktopManager.gnome.extraGSettingsOverrides = ''
+          [org.gnome.desktop.session]
+              idle-delay=0
+        '';
+      }
+    else
+      {
+        enable = true;
+        layout = "us";
+        dpi = 220;
 
-    desktopManager = {
-      xterm.enable = false;
-      wallpaper.mode = "fill";
-    };
+        desktopManager = {
+          xterm.enable = false;
+          wallpaper.mode = "fill";
+        };
 
-    displayManager = {
-      defaultSession = "none+i3";
-      lightdm.enable = true;
+        displayManager = {
+          defaultSession = "none+i3";
+          lightdm.enable = true;
 
-      # AARCH64: For now, on Apple Silicon, we must manually set the
-      # display resolution. This is a known issue with VMware Fusion.
-      sessionCommands = ''
-        ${pkgs.xorg.xset}/bin/xset r rate 200 40
-      '';
-    };
+          # AARCH64: For now, on Apple Silicon, we must manually set the
+          # display resolution. This is a known issue with VMware Fusion.
+          sessionCommands = ''
+            ${pkgs.xorg.xset}/bin/xset r rate 200 40
+          '';
+        };
 
-    windowManager = { i3.enable = true; };
-  };
+        windowManager = {
+          i3.enable = true;
+        };
+      };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
@@ -106,7 +123,10 @@ in {
   fonts = {
     fontDir.enable = true;
 
-    packages = [ pkgs.fira-code pkgs.jetbrains-mono ];
+    packages = [
+      pkgs.fira-code
+      pkgs.jetbrains-mono
+    ];
   };
 
   # Required to make the Gnome keyring work. The keyring makes passwords and other secrets
@@ -116,13 +136,14 @@ in {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs;
+  environment.systemPackages =
+    with pkgs;
     [
       cachix
       gnumake
       killall
       niv
-      rxvt_unicode
+      rxvt-unicode
       xclip
 
       # For hypervisors that support auto-resizing, this script forces it.
@@ -130,7 +151,8 @@ in {
       (writeShellScriptBin "xrandr-auto" ''
         xrandr --output Virtual-1 --auto
       '')
-    ] ++ lib.optionals (currentSystemName == "vm-aarch64") [
+    ]
+    ++ lib.optionals (currentSystemName == "vm-aarch64") [
       # This is needed for the vmware user tools clipboard to work.
       # You can test if you don't need this by deleting this and seeing
       # if the clipboard sill works.
@@ -153,6 +175,13 @@ in {
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.
   networking.firewall.enable = false;
+
+  # This configuration is requires for xremap to function without requiring root access.
+  hardware.uinput.enable = true;
+  boot.kernelModules = [ "uinput" ];
+  services.udev.extraRules = ''
+    KERNEL=="uinput", GROUP="input", TAG+="uaccess"
+  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

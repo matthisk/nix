@@ -1,11 +1,20 @@
 { isWSL, inputs }:
 
-{ config, lib, pkgs, unstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  unstable,
+  ...
+}:
 
 let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in {
+in
+{
+  imports = [ inputs.xremap-flake.homeManagerModules.default ];
+
   home.stateVersion = "24.05";
 
   fonts.fontconfig.enable = true;
@@ -22,7 +31,7 @@ in {
     pkgs.watch
     pkgs.tig
     pkgs.scmpuff
-    pkgs.nixfmt-classic
+    pkgs.nixfmt
     pkgs.delta
     pkgs.gh
     pkgs.fnm
@@ -32,6 +41,7 @@ in {
     pkgs.btop
     pkgs.pi-coding-agent
     pkgs.zulu25
+    pkgs.codex
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -41,14 +51,104 @@ in {
     pkgs.zls
     pkgs.vtsls
     pkgs.lua-language-server
-  ] ++ (lib.optionals isDarwin [
+
+    # Install herdr through flake
+    inputs.herdr.packages.${pkgs.system}.default
+  ]
+  ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux
     pkgs.cachix
-  ]) ++ (lib.optionals (isLinux && !isWSL) [
+  ])
+  ++ (lib.optionals (isLinux && !isWSL) [
     pkgs.chromium
     pkgs.firefox
     pkgs.inotify-tools
   ]);
+
+  # We remap keybindings on Linux so they behave the same os OS X
+  services.xremap = lib.mkIf isLinux {
+    enable = true;
+    withGnome = true;
+
+    config = {
+      # Swap Alt and Super to match macOS modifier placement:
+      # Alt    -> Command (⌘)
+      # Super  -> Option  (⌥)
+      modmap = [
+        {
+          name = "Mac modifier layout";
+          remap = {
+            "Alt_L" = "Super_L";
+            "Alt_R" = "Super_R";
+            "Super_L" = "Alt_L";
+            "Super_R" = "Alt_R";
+          };
+        }
+      ];
+
+      keymap = [
+        {
+          name = "Mac Command shortcuts";
+          remap = {
+            # Common editing shortcuts
+            "Super-a" = "C-a";
+            "Super-c" = "C-c";
+            "Super-v" = "C-v";
+            "Super-x" = "C-x";
+            "Super-z" = "C-z";
+            "Super-Shift-z" = "C-Shift-z";
+
+            # File and application shortcuts
+            "Super-s" = "C-s";
+            "Super-o" = "C-o";
+            "Super-n" = "C-n";
+            "Super-f" = "C-f";
+            "Super-r" = "C-r";
+            "Super-p" = "C-p";
+            "Super-t" = "C-t";
+            "Super-w" = "C-w";
+
+            # macOS Command+Q: quit application
+            "Super-q" = "Alt-F4";
+
+            # macOS Command+Tab: switch applications
+            "Super-Tab" = "Alt-Tab";
+            "Super-Shift-Tab" = "Alt-Shift-Tab";
+
+            # Command+Left/Right: start/end of line
+            "Super-Left" = "Home";
+            "Super-Right" = "End";
+
+            # Command+Up/Down: start/end of document
+            "Super-Up" = "C-Home";
+            "Super-Down" = "C-End";
+
+            # Command+Backspace: delete to start of line
+            "Super-Backspace" = [
+              "Shift-Home"
+              "Backspace"
+            ];
+          };
+        }
+
+        {
+          name = "Mac Option text navigation";
+          remap = {
+            # Option+Left/Right: move one word
+            "Alt-Left" = "C-Left";
+            "Alt-Right" = "C-Right";
+
+            # Option+Backspace: delete previous word
+            "Alt-Backspace" = "C-Backspace";
+
+            # Option+Up/Down: paragraph-style navigation
+            "Alt-Up" = "C-Up";
+            "Alt-Down" = "C-Down";
+          };
+        }
+      ];
+    };
+  };
 
   programs.gpg.enable = true;
   programs.direnv.enable = true;
@@ -86,11 +186,16 @@ in {
       gpo = "git push origin HEAD";
       gpl = "git pull";
       gt = "git tag";
-    } // (if isLinux then {
-      pbcopy = "xclip";
-      pbpaste = "xclip -o";
-    } else
-      { });
+    }
+    // (
+      if isLinux then
+        {
+          pbcopy = "xclip";
+          pbpaste = "xclip -o";
+        }
+      else
+        { }
+    );
 
     shellInit = ''
       if test -f ~/.secrets
@@ -220,22 +325,38 @@ in {
 
   programs.alacritty = {
     enable = !isWSL;
-    settings = (builtins.fromTOML (builtins.readFile
-      "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml"))
+    settings =
+      (builtins.fromTOML (
+        builtins.readFile "${unstable.alacritty-theme}/share/alacritty-theme/tokyo_night.toml"
+      ))
       // {
         terminal.shell = "${pkgs.fish}/bin/fish";
         window = {
           decorations = if isDarwin then "Transparent" else "Full";
           startup_mode = if isDarwin then "Maximized" else "Fullscreen";
           opacity = 0.9;
-          padding = { y = 27; };
+          padding = {
+            y = 27;
+          };
         };
         font = {
           # Haven't figured a way to get the linux font and mac font to behave the same on high DPI screens.
           # For now just setting a different font size on each OS.
           size = if isDarwin then 14 else 12;
-          normal = { family = "FiraCode Nerd Font Mono"; };
+          normal = {
+            family = "FiraCode Nerd Font Mono";
+          };
         };
       };
+  };
+
+  programs.ghostty = {
+    enable = isLinux;
+    settings = {
+      theme = "TokyoNight";
+      font-size = 12;
+      background-opacity = 0.95;
+      fullscreen = true;
+    };
   };
 }

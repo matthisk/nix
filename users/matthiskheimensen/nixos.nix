@@ -16,7 +16,12 @@
   users.users.matthiskheimensen = {
     isNormalUser = true;
     home = "/home/matthiskheimensen";
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = [
+      "docker"
+      "wheel"
+      "uinput"
+      "input"
+    ];
     shell = pkgs.fish;
     hashedPassword = "$y$j9T$Tk8XgXz7jBJawmkGoI.P91$6h5SkiEp.cQIaFoyqXQ7BrO7aZcwt46H/dy7h4ugeC0";
     openssh.authorizedKeys.keys = [
