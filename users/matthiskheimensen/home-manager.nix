@@ -41,7 +41,6 @@ in
     pkgs.btop
     pkgs.pi-coding-agent
     pkgs.zulu25
-    pkgs.codex
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -54,6 +53,8 @@ in
 
     # Install herdr through flake
     inputs.herdr.packages.${pkgs.system}.default
+    # Install codex through a flake
+    inputs.codex-cli.packages.${pkgs.system}.default
   ]
   ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux

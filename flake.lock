@@ -16,6 +16,25 @@
         "type": "github"
       }
     },
+    "codex-cli": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1792102462,
+        "narHash": "sha256-co1yWucHy1/uQbwm+PSUTlPRrL1PengYmBzsdG83HcQ=",
+        "owner": "sadjow",
+        "repo": "codex-cli-nix",
+        "rev": "8dc8656b82ed75c9f76002f1368415b1e8471264",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sadjow",
+        "repo": "codex-cli-nix",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1785782307,
@@ -102,9 +121,27 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1791914995,
+        "narHash": "sha256-Zf/xfQEAasnwnmEfHqW/4hjDE/s44yn2hD4RuVIZRjA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b7a79d3fea1e214f6d668d521cecec0c01e26544",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "herdr": {
       "inputs": {
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay"
       },
       "locked": {
@@ -165,16 +202,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1779911860,
-        "narHash": "sha256-ubcLAcKBDCZjhxw/kH5DL5GdBZQdzLqpkTe7HonvJVs=",
+        "lastModified": 1791966044,
+        "narHash": "sha256-t1hT8UW97rFCWCJO7/pClvu0AhLN5V3uir2M0ic4w/Q=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c0a89c379b4ac67c7b13b051ddbd4e0dbc9b0eaf",
+        "rev": "319e4cebef10cbb636c6ea392137b52ad105336a",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -212,6 +249,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1779911860,
+        "narHash": "sha256-ubcLAcKBDCZjhxw/kH5DL5GdBZQdzLqpkTe7HonvJVs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c0a89c379b4ac67c7b13b051ddbd4e0dbc9b0eaf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1785989512,
         "narHash": "sha256-HFQhkQcl5D1hUNoen3SGHCSFCt2Bg6uP+HgbrnA3InQ=",
         "owner": "nixos",
@@ -226,7 +279,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1785747939,
         "narHash": "sha256-D740uKsMbgsfK2oaDenJLLPIZfq7W0/g4KN/Fls8eKs=",
@@ -245,12 +298,13 @@
     "root": {
       "inputs": {
         "bobthefish": "bobthefish",
+        "codex-cli": "codex-cli",
         "darwin": "darwin",
         "fish-fzf": "fish-fzf",
         "herdr": "herdr",
         "home-manager": "home-manager",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "xremap-flake": "xremap-flake"
       }
@@ -276,6 +330,21 @@
         "type": "github"
       }
     },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "xremap": {
       "flake": false,
       "locked": {
@@ -297,7 +366,7 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "xremap": "xremap"
       },
       "locked": {
