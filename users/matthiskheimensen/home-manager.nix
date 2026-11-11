@@ -42,6 +42,10 @@ in
     pkgs.pi-coding-agent
     pkgs.zulu25
     pkgs.signal-desktop
+    pkgs.zed-editor
+    # nixos-26.05's vscode 1.144.0 fails in patchPhase: 1.144 moved the bundled
+    # ripgrep to @vscode/ripgrep-universal, which only unstable handles.
+    unstable.vscode
     # The darwin build ships Sbx.app; running its binary in the install check
     # makes macOS tag the bundle (com.apple.macl), which then breaks Nix's
     # store path canonicalisation ("clearing flags ... Operation not permitted").
@@ -64,11 +68,14 @@ in
   ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux
     pkgs.cachix
+    unstable.raycast
+    unstable.rectangle
   ])
   ++ (lib.optionals (isLinux && !isWSL) [
     pkgs.chromium
     pkgs.firefox
     pkgs.inotify-tools
+    pkgs.ghostty
   ]);
 
   # We remap keybindings on Linux so they behave the same os OS X

@@ -1,22 +1,20 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   homebrew = {
     enable = true;
     casks = [
-      "raycast"
-      "zed"
       "ghostty"
-      "spotify"
-      "visual-studio-code"
       "docker-desktop"
-      "rectangle"
       "elasticvue"
       "finicky"
-      "cursor"
       "wispr-flow"
       "agentsview"
-      "github"
       "zen"
       "paseo"
     ];
@@ -33,8 +31,19 @@
     ];
   };
 
+  # Sets HOMEBREW_PREFIX, MANPATH, INFOPATH etc. Note that this also prepends
+  # the Homebrew bins to PATH, which is undone below.
   programs.fish.shellInit = ''
     eval "$(/opt/homebrew/bin/brew shellenv)"
+  '';
+
+  # Move Homebrew and ~/.local/bin behind the Nix profiles. This has to live in
+  # the home-manager fish config: ~/.config/fish/config.fish runs after
+  # /etc/fish/config.fish and re-prepends home.sessionPath (~/.local/bin).
+  # `--path` edits $PATH directly; without it fish_add_path writes the
+  # universal fish_user_paths, which always ends up in front of PATH.
+  home-manager.users.matthiskheimensen.programs.fish.shellInit = lib.mkAfter ''
+    fish_add_path --global --move --append --path /opt/homebrew/bin /opt/homebrew/sbin $HOME/.local/bin
   '';
 
   # Home directory should already exist.

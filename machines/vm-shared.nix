@@ -167,6 +167,7 @@ in
       "1password-cli"
       "1password-gui"
       "docker-sbx"
+      "vscode"
     ];
   programs._1password.enable = true;
   programs._1password-gui = {

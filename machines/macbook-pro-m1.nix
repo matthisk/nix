@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-darwin";
 
   # Allow specific unfree packages.
@@ -6,6 +12,8 @@
     pkg:
     builtins.elem (lib.getName pkg) [
       "docker-sbx"
+      "raycast"
+      "vscode"
     ];
 
   # (todo: pull this out into a file)
@@ -45,7 +53,7 @@
       . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
     fi
     # End Nix
-    '';
+  '';
 
   programs.fish.enable = true;
   programs.fish.shellInit = ''
@@ -54,9 +62,13 @@
       source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
     end
     # End Nix
-    '';
+  '';
 
-  environment.shells = with pkgs; [ bashInteractive zsh fish ];
+  environment.shells = with pkgs; [
+    bashInteractive
+    zsh
+    fish
+  ];
   environment.systemPackages = with pkgs; [
     cachix
   ];
