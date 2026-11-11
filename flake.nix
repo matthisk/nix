@@ -14,11 +14,9 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
-    # We install herdr from its flake.
+    # Dependencies we install from a dedicate flake to get more recent version(s).
     herdr.url = "github:herdrdev/herdr";
     xremap-flake.url = "github:xremap/nix-flake";
-
-    # We install codex from a dedicated flake to have more recent versions
     codex-cli.url = "github:sadjow/codex-cli-nix";
 
     home-manager = {

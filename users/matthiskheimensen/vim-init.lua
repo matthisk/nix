@@ -43,6 +43,14 @@ require('lualine').setup {
   }
 }
 
+-- Convenience bindings
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", {
+  desc = "Save file",
+})
+vim.keymap.set("n", "<leader>qq", "<cmd>:q<CR>", {
+  desc = "Exit nvim",
+})
+
 -- Configure Telescope keybindings
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', "<leader> ", builtin.find_files, {})

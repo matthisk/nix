@@ -41,6 +41,8 @@ in
     pkgs.btop
     pkgs.pi-coding-agent
     pkgs.zulu25
+    pkgs.signal-desktop
+    pkgs.docker-sbx
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -51,9 +53,8 @@ in
     pkgs.vtsls
     pkgs.lua-language-server
 
-    # Install herdr through flake
+    # Install several dependencies from their flake.
     inputs.herdr.packages.${pkgs.system}.default
-    # Install codex through a flake
     inputs.codex-cli.packages.${pkgs.system}.default
   ]
   ++ (lib.optionals isDarwin [
@@ -299,7 +300,9 @@ in
 
   programs.neovim = {
     enable = true;
-    extraLuaConfig = (builtins.readFile ./vim-init.lua);
+    initLua = (builtins.readFile ./vim-init.lua);
+    withPython3 = false;
+    withRuby = false;
     plugins = with pkgs; [
       vimPlugins.tokyonight-nvim
       vimPlugins.lualine-nvim

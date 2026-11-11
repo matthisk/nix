@@ -9,26 +9,28 @@
       "ghostty"
       "spotify"
       "visual-studio-code"
-      "claude-code"
       "docker-desktop"
       "rectangle"
       "elasticvue"
       "finicky"
       "cursor"
-      "codex"
       "wispr-flow"
       "agentsview"
       "github"
+      "zen"
+      "paseo"
     ];
     # The Miro specific dependencies require Artifactory env variables.
     # As of right now I haven't found a way for Nix to propagate these env variables.
     # It is easiest if you just comment out this line and install these brews manually.
     # brews = [ "miro-buf" "miro-dev-proxy" ];
-    taps = [{
-      name = "miroapp-dev/homebrew-miro";
-      clone_target = "git@github.com:miroapp-dev/homebrew-miro.git";
-      force_auto_update = true;
-    }];
+    taps = [
+      {
+        name = "miroapp-dev/homebrew-miro";
+        clone_target = "git@github.com:miroapp-dev/homebrew-miro.git";
+        force_auto_update = true;
+      }
+    ];
   };
 
   programs.fish.shellInit = ''
