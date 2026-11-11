@@ -17,8 +17,6 @@ let
     inputs.home-manager.darwinModules
   else
     inputs.home-manager.nixosModules;
-
-  unstable = import inputs.nixpkgs-unstable { inherit system; };
 in systemFunc rec {
   inherit system;
 
@@ -29,12 +27,17 @@ in systemFunc rec {
     machineConfig
     userOSConfig
     home-manager.home-manager
-    {
+    ({ config, ... }: {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit unstable; };
+      # Import unstable with the machine's nixpkgs.config so settings like
+      # allowUnfreePredicate apply to unstable packages too.
+      home-manager.extraSpecialArgs.unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config = config.nixpkgs.config;
+      };
       home-manager.users.${user} = import userHMConfig { isWSL = isWSL; inputs = inputs; };
-    }
+    })
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.
     {

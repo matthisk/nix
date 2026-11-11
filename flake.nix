@@ -18,6 +18,7 @@
     herdr.url = "github:herdrdev/herdr";
     xremap-flake.url = "github:xremap/nix-flake";
     codex-cli.url = "github:sadjow/codex-cli-nix";
+    claude-code.url = "github:sadjow/claude-code-nix";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";

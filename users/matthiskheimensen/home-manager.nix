@@ -42,7 +42,10 @@ in
     pkgs.pi-coding-agent
     pkgs.zulu25
     pkgs.signal-desktop
-    pkgs.docker-sbx
+    # The darwin build ships Sbx.app; running its binary in the install check
+    # makes macOS tag the bundle (com.apple.macl), which then breaks Nix's
+    # store path canonicalisation ("clearing flags ... Operation not permitted").
+    (unstable.docker-sbx.overrideAttrs { doInstallCheck = false; })
 
     # Install fonts
     pkgs.nerd-fonts.fira-code
@@ -56,6 +59,7 @@ in
     # Install several dependencies from their flake.
     inputs.herdr.packages.${pkgs.system}.default
     inputs.codex-cli.packages.${pkgs.system}.default
+    inputs.claude-code.packages.${pkgs.system}.default
   ]
   ++ (lib.optionals isDarwin [
     # This comes pre-installed on Linux

@@ -1,6 +1,13 @@
 { config, pkgs, lib, ... }: {
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-darwin";
 
+  # Allow specific unfree packages.
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "docker-sbx"
+    ];
+
   # (todo: pull this out into a file)
   nix = {
     # Determinate uses its own daemon to manage the Nix installation that

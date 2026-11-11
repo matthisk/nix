@@ -166,6 +166,7 @@ in
       "1password"
       "1password-cli"
       "1password-gui"
+      "docker-sbx"
     ];
   programs._1password.enable = true;
   programs._1password-gui = {
